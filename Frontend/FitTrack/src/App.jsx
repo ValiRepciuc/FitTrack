@@ -5,6 +5,7 @@ import Dashboard from "./Pages/Dashboard/Dashboard";
 import Profile from "./Pages/Profile/Profile";
 import Routines from "./Pages/Routines/Routines";
 import Nutrition from "./Pages/Nutrition/Nutrition";
+import NotFound from "./Pages/NotFound/NotFound";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/routines" element={<Routines />} />
         <Route path="/nutrition" element={<Nutrition />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

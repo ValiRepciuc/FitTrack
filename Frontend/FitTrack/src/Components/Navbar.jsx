@@ -32,12 +32,20 @@ const Navbar = () => {
           fontWeight="bold"
           fontFamily="main"
         >
-          <Text as="span" color="black">
-            FIT
-          </Text>
-          <Text as="span" color="white">
-            TRACK
-          </Text>
+          <Button
+            variant="none"
+            fontWeight="bold"
+            fontSize="2xl"
+            fontFamily={"main"}
+            onClick={() => navigate("/dashboard")}
+          >
+            <Text as="span" color="black">
+              FIT
+            </Text>
+            <Text as="span" color="white">
+              TRACK
+            </Text>
+          </Button>
         </Text>
 
         {/* Burger menu button (hidden on larger screens) */}
@@ -60,7 +68,6 @@ const Navbar = () => {
             variant="link"
             color="white"
             fontWeight="bold"
-            m
             fontSize="2xl"
             fontFamily={"main"}
             onClick={() => navigate("/nutrition")}
