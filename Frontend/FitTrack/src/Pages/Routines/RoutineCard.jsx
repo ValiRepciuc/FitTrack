@@ -16,6 +16,7 @@ import {
   FormLabel,
   Input,
   Textarea,
+  Box,
 } from "@chakra-ui/react";
 
 function RoutineCard({ routine, updateRoutine, removeRoutine }) {
@@ -33,6 +34,14 @@ function RoutineCard({ routine, updateRoutine, removeRoutine }) {
     console.log(editableRoutine); // Salvează datele rutinei editabile
     updateRoutine(editableRoutine); // Actualizează rutina în componenta părinte
     setIsModalOpen(false);
+  };
+
+  const handleExerciseChange = (index, field, value) => {
+    setEditableRoutine((prevState) => {
+      const updatedExercises = [...prevState.exercises];
+      updatedExercises[index][field] = value;
+      return { ...prevState, exercises: updatedExercises };
+    });
   };
 
   return (
@@ -56,7 +65,8 @@ function RoutineCard({ routine, updateRoutine, removeRoutine }) {
             Difficulty: {routine.difficulty}
           </Text>
           <Text mt={4} color="white">
-            <strong>Exercises:</strong> {routine.exercises.join(", ")}
+            <strong>Exercises:</strong>{" "}
+            {routine.exercises.map((exercise) => exercise.name).join(", ")}
           </Text>
         </CardBody>
         <CardFooter justify="center" mt={4}>
@@ -122,15 +132,48 @@ function RoutineCard({ routine, updateRoutine, removeRoutine }) {
             </FormControl>
             <FormControl mt={4}>
               <FormLabel>Exercises</FormLabel>
-              <Textarea
-                value={editableRoutine.exercises.join(", ")}
-                onChange={(e) =>
-                  handleInputChange(
-                    "exercises",
-                    e.target.value.split(",").map((exercise) => exercise.trim())
-                  )
-                }
-              />
+              <Box>
+                {editableRoutine.exercises.map((exercise, index) => (
+                  <Box key={index} mb={4}>
+                    <Text mb={2}>{exercise.name}</Text>
+                    <Input
+                      type="number"
+                      value={exercise.kg}
+                      onChange={(e) =>
+                        handleExerciseChange(
+                          index,
+                          "kg",
+                          parseFloat(e.target.value) || 0
+                        )
+                      }
+                      placeholder="kg"
+                      mr={2}
+                      width="80px"
+                      display="inline-block"
+                    />
+                    <Text display="inline-block" mr={2}>
+                      kg x
+                    </Text>
+                    <Input
+                      type="number"
+                      value={exercise.reps}
+                      onChange={(e) =>
+                        handleExerciseChange(
+                          index,
+                          "reps",
+                          parseInt(e.target.value) || 0
+                        )
+                      }
+                      placeholder="reps"
+                      width="80px"
+                      display="inline-block"
+                    />
+                    <Text display="inline-block" ml={2}>
+                      reps
+                    </Text>
+                  </Box>
+                ))}
+              </Box>
             </FormControl>
           </ModalBody>
           <ModalFooter>
