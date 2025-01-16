@@ -1,11 +1,13 @@
 import { Input } from "@chakra-ui/react";
 
-const CustomInput = ({ placeholder, value, onChange }) => {
+const CustomInput = ({ placeholder, name, value, type = "text", onChange }) => {
   return (
     <Input
       placeholder={placeholder}
       value={value}
       onChange={onChange}
+      name={name}
+      type={type}
       fontFamily="second"
       color={"white"}
       fontWeight="bold"
