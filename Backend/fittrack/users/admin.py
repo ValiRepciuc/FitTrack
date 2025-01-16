@@ -7,8 +7,8 @@ from django.contrib.auth.admin import UserAdmin
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('date_of_birth', 'gender', 'height', 'weight')}),
+        (None, {'fields': ('date_of_birth', 'gender', 'height', 'weight', 'workouts')}), 
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('date_of_birth', 'gender', 'height', 'weight')}),
+        (None, {'fields': ('date_of_birth', 'gender', 'height', 'weight', 'workouts')}), 
     )

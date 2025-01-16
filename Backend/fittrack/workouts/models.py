@@ -8,6 +8,7 @@ class Workout(models.Model):
     type = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     duration = models.IntegerField(null=True, blank=True)
+    exercices = models.ManyToManyField('Exercise', through='WorkoutExercise', related_name='workouts')
 
     def __str__(self):
         return self.name
@@ -26,13 +27,6 @@ class WorkoutExercise(models.Model):
     sets = models.IntegerField()
     reps = models.IntegerField()
     weight = models.DecimalField(max_digits=5, decimal_places=2)
-
-    def __str__(self):
-        return f'{self.workout.name} - {self.exercise.name}'
     
-class UserWorkout(models.Model):
-    user = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE)
-    workout = models.ForeignKey(Workout, on_delete=models.CASCADE)
-
     def __str__(self):
-        return f'{self.user.username} - {self.workout.name}'
+        return f'{self.workout.name} - {self.exercise.name}'  
