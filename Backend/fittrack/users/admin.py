@@ -1,14 +1,24 @@
 from django.contrib import admin
-from .models import CustomUser
 from django.contrib.auth.admin import UserAdmin
-# Register your models here.
+from .models import CustomUser
 
-
-@admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-    fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('date_of_birth', 'gender', 'height', 'weight', 'workouts')}), 
+    model = CustomUser
+    fieldsets = (
+        *UserAdmin.fieldsets,  # Include câmpurile standard ale UserAdmin
+        (
+            'Additional Info',  # Titlu pentru secțiunea personalizată
+            {
+                'fields': (
+                    'date_of_birth',
+                    'gender',
+                    'height',
+                    'weight',
+                    'profile_picture',
+                ),
+            },
+        ),
     )
-    add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('date_of_birth', 'gender', 'height', 'weight', 'workouts')}), 
-    )
+    list_display = ['username', 'email', 'date_of_birth', 'gender']
+
+admin.site.register(CustomUser, CustomUserAdmin)

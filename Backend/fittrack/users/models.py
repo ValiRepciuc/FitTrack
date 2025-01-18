@@ -7,10 +7,15 @@ from workouts.models import Workout
 
 class CustomUser(AbstractUser):
     date_of_birth = models.DateField(null=True, blank=True)
-    gender = models.CharField(max_length=10, null=True, blank=True)
+    gender = models.CharField(
+        max_length=6,
+        choices=[('Male', 'Male'), ('Female', 'Female')],
+        blank=True,
+        null=True
+    )
     height = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     weight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
-    workouts = models.ManyToManyField(Workout, related_name='users')
+    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
 
     def __str__(self):
         return self.username

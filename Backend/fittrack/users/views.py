@@ -1,3 +1,5 @@
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -5,6 +7,7 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken  
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
+from .serializers import UserProfileSerializer
 # Create your views here.
 
 User = get_user_model()
@@ -62,3 +65,28 @@ class RegisterView(APIView):
             'refresh': tokens['refresh'],
             'access': tokens['access'],
         }, status=status.HTTP_201_CREATED)
+
+
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+    
+    def get(self, request):
+        user = request.user
+        serializer = UserProfileSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+
+    def put(self, request):
+        user = request.user
+        serializer = UserProfileSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    def delete(self, request):
+        user = request.user
+        user.profile_picture.delete(save = True)
+        return Response({'message': 'Profile picture deleted successfully'}, status=status.HTTP_200_OK)
