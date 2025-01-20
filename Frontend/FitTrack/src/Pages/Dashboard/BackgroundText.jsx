@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Box, Text, Button } from "@chakra-ui/react";
+import { AuthContext } from "../../AuthContext";
+import { useNavigate } from "react-router-dom";
+import { use } from "react";
 
 function BackgroundText() {
+  const { auth } = useContext(AuthContext);
+  const loggedIn = auth.accessToken;
+  const navigator = useNavigate();
+
+  function handleButton() {
+    if (loggedIn) {
+      navigator("/profile");
+    } else {
+      navigator("/");
+    }
+  }
+
   return (
     <Box>
       <Text
@@ -60,8 +75,9 @@ function BackgroundText() {
           fontFamily={"second"}
           mt="16px"
           p={{ base: "8px", md: "24px" }}
+          onClick={handleButton}
         >
-          set your profile
+          {loggedIn ? "set up your profile" : "sign up now"}
         </Button>
       </Box>
     </Box>

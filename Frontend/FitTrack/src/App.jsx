@@ -6,6 +6,7 @@ import Profile from "./Pages/Profile/Profile";
 import Routines from "./Pages/Routines/Routines";
 import Nutrition from "./Pages/Nutrition/Nutrition";
 import NotFound from "./Pages/NotFound/NotFound";
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
   return (
@@ -13,9 +14,30 @@ function App() {
       <Routes>
         <Route path="/" element={<Auth />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/routines" element={<Routines />} />
-        <Route path="/nutrition" element={<Nutrition />} />
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/routines"
+          element={
+            <PrivateRoute>
+              <Routines />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/nutrition"
+          element={
+            <PrivateRoute>
+              <Nutrition />
+            </PrivateRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

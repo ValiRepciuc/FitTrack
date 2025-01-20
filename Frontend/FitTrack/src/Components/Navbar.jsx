@@ -18,6 +18,8 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const { logout } = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
+  const loggedIn = auth.accessToken;
 
   return (
     <Box
@@ -105,7 +107,7 @@ const Navbar = () => {
             fontFamily={"main"}
             onClick={logout}
           >
-            Logout
+            {loggedIn ? "Logout" : "Login"}
           </Button>
         </HStack>
       </Flex>
@@ -153,7 +155,7 @@ const Navbar = () => {
               fontFamily={"main"}
               onClick={logout}
             >
-              Logout
+              {loggedIn ? "Logout" : "Login"}
             </Button>
           </Stack>
         </Box>
