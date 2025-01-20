@@ -21,6 +21,8 @@ def get_tokens_for_user(user):
     }
 
 class LoginView(APIView):
+    permission_classes = [AllowAny]
+    
     def post(self, request, *args, **kwargs):
         username = request.data.get('username')
         password = request.data.get('password')
