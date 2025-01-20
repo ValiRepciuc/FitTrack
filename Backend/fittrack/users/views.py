@@ -1,3 +1,4 @@
+from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from django.shortcuts import render
@@ -37,6 +38,8 @@ class LoginView(APIView):
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class RegisterView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request, *args, **kwargs):
         username = request.data.get('username')
         email = request.data.get('email')
