@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 function RegisterForm() {
   const [formData, setFormData] = React.useState({
-    lastName: "",
-    firstName: "",
+    last_name: "",
+    first_name: "",
     email: "",
     username: "",
     password: "",
@@ -29,8 +29,8 @@ function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (
-      !formData.lastName ||
-      !formData.firstName ||
+      !formData.last_name ||
+      !formData.first_name ||
       !formData.email ||
       !formData.username ||
       !formData.password
@@ -38,6 +38,7 @@ function RegisterForm() {
       alert("All fields are required!");
       return;
     }
+    
     setIsSubmitting(true);
     try {
       const response = await axios.post(
@@ -47,7 +48,7 @@ function RegisterForm() {
       );
       console.log("User registered successfully:", response.data);
       alert("Registration successful!");
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.error("Error registering user:", error);
       console.log(error.response);
@@ -72,16 +73,16 @@ function RegisterForm() {
       </Text>
       <CustomInput
         placeholder="Enter your Last Name"
-        name="lastName"
-        value={formData.lastName}
+        name="last_name"
+        value={formData.last_name}
         type="text"
         onChange={handleChange}
       />
       <CustomInput
         placeholder="Enter your First Name"
         type="text"
-        name="firstName"
-        value={formData.firstName}
+        name="first_name"
+        value={formData.first_name}
         onChange={handleChange}
       />
       <CustomInput

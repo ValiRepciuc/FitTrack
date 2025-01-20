@@ -7,7 +7,7 @@ import LoginForm from "./LoginForm";
 import testLogin from "../../Images/testLogin.jpg";
 
 function Register() {
-  const [isCreated, setIsCreated] = useState(false);
+  const [isCreated, setIsCreated] = useState(true);
 
   const bgPhoto = isCreated ? testLogin : RegisterBG;
   return (

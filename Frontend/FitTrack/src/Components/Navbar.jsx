@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Flex,
@@ -11,10 +11,13 @@ import {
 } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../AuthContext";
 
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+
+  const { logout } = useContext(AuthContext);
 
   return (
     <Box
@@ -100,7 +103,7 @@ const Navbar = () => {
             fontWeight="bold"
             fontSize="2xl"
             fontFamily={"main"}
-            onClick={() => navigate("/")}
+            onClick={logout}
           >
             Logout
           </Button>
@@ -148,7 +151,7 @@ const Navbar = () => {
               fontWeight="bold"
               fontSize="l"
               fontFamily={"main"}
-              onClick={() => navigate("/")}
+              onClick={logout}
             >
               Logout
             </Button>

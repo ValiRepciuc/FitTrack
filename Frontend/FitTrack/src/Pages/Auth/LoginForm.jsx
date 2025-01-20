@@ -1,16 +1,18 @@
-import { Button, VStack, Text } from "@chakra-ui/react";
+import { Button, VStack, Text, Alert, AlertIcon } from "@chakra-ui/react";
 import CustomInput from "./CustomInput";
 import PasswordInput from "./PasswordInput";
-import { React, useState } from "react";
+import { React, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../AuthContext";
 import axios from "axios";
 
 function LoginForm() {
   const navigate = useNavigate();
+  const { setAuth } = useContext(AuthContext); // Accesăm contextul
 
   const [formData, setFormData] = useState({ username: "", password: "" });
-
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,34 +24,37 @@ function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // Resetăm eroarea anterioară
+
     if (!formData.username || !formData.password) {
-      alert("All fields are required!");
+      setError("All fields are required!");
       return;
     }
+
     setIsSubmitting(true);
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_LOGIN_ENDPOINT}`, // Endpoint-ul pentru login
+        `${import.meta.env.VITE_LOGIN_ENDPOINT}`,
         formData,
-        { withCredentials: true } // Necesită includerea cookie-urilor
+        { withCredentials: true }
       );
 
-      // Extragem token-ul JWT din răspuns
-      const token = response.data.token;
+      const { access, refresh, username } = response.data;
 
-      // Salvăm token-ul în localStorage
-      localStorage.setItem("authToken", token);
+      // Salvăm token-ul în context și în localStorage
+      setAuth({ accessToken: access, username });
+      localStorage.setItem("refreshToken", refresh);
 
       // Navigăm către dashboard
       navigate("/dashboard");
-      alert("Login successful!");
     } catch (error) {
       console.error("Error logging in:", error);
       if (error.response) {
-        console.log(error.response.data);
-        alert(error.response.data.error || "Failed to login.");
+        setError(
+          error.response.data.error || "Login failed. Please try again."
+        );
       } else {
-        alert("An unexpected error occurred.");
+        setError("Network error. Please try again later.");
       }
     } finally {
       setIsSubmitting(false);
@@ -68,6 +73,12 @@ function LoginForm() {
       >
         Login
       </Text>
+      {error && (
+        <Alert status="error" borderRadius="md">
+          <AlertIcon />
+          {error}
+        </Alert>
+      )}
       <CustomInput
         placeholder="Enter your email/username"
         name="username"
