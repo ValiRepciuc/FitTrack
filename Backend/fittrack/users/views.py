@@ -41,6 +41,8 @@ class RegisterView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
+        last_name = request.data.get('last_name')
+        first_name = request.data.get('first_name')
         username = request.data.get('username')
         email = request.data.get('email')
         password = request.data.get('password')
@@ -53,6 +55,8 @@ class RegisterView(APIView):
 
 
         user = User.objects.create_user(
+            last_name=last_name,
+            first_name=first_name,
             username=username,
             email=email,
             password=password,
