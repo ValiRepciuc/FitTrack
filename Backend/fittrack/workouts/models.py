@@ -2,6 +2,14 @@ from django.db import models
 
 # Create your models here.
 
+    
+class Exercise(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(null=True, blank=True)
+    muscle_group = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
 
 class Workout(models.Model):
     user = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE, related_name='workouts', default=1)
@@ -14,15 +22,7 @@ class Workout(models.Model):
         choices=[('Beginner', 'Beginner'), ('Intermediate', 'Intermediate'), ('Advanced', 'Advanced')],
         default='Beginner'
     )
-    exercices = models.ManyToManyField('Exercise', through='WorkoutExercise', related_name='workouts')
-
-    def __str__(self):
-        return self.name
-    
-class Exercise(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField(null=True, blank=True)
-    muscle_group = models.CharField(max_length=100)
+    exercises = models.ManyToManyField('Exercise', through='WorkoutExercise', related_name='workouts')
 
     def __str__(self):
         return self.name

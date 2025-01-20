@@ -7,8 +7,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView 
 from rest_framework.response import Response
 
-from workouts.serializers.serializer import WorkoutSerializer 
-from .models import Workout, WorkoutExercise
+from workouts.serializers.serializer import ExerciseSerializer, WorkoutSerializer 
+from .models import Exercise, Workout, WorkoutExercise
 # Create your views here.
 
 
@@ -38,9 +38,18 @@ class WorkoutListCreateView(APIView):
         return Response(serializer.data)
     
     def post(self, request):
-        serializer = WorkoutSerializer(data=request.data)
+        serializer = WorkoutSerializer(data=request.data, context={'request': request})
 
         if serializer.is_valid():
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
+
+class ExerciceListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        exercise = Exercise.objects.all()
+        serializer = ExerciseSerializer(exercise, many=True)
+        return Response(serializer.data)
+    
